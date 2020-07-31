@@ -30,25 +30,12 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#if defined(__clang__) || defined(__GNUC__)
-#	define OPTICK_GCC (1)
-#	if defined(__APPLE_CC__)
-#		define OPTICK_OSX (1)
-#	elif defined(__linux__)
-#		define OPTICK_LINUX (1)
-#	elif defined(__FreeBSD__)
-#		define OPTICK_FREEBSD (1)
-#	endif
-#elif defined(_MSC_VER)
-#	define OPTICK_MSVC (1)
-#	if defined(_DURANGO)
-#		define OPTICK_PC (0)
-#	else
-#		define OPTICK_PC (1)
+#ifndef _WIN64
+#error "unsupported platform. the only supported platform is Windows x64"
 #endif
-#else
-#error Compiler not supported
-#endif
+
+#define OPTICK_MSVC (1)
+#define OPTICK_PC (1)
 
 ////////////////////////////////////////////////////////////////////////
 // Target Platform
@@ -102,7 +89,7 @@ namespace Optick
 	// Image:  http://i.msdn.microsoft.com/dynimg/IC24340.png
 	struct Color
 	{
-		enum
+		enum: unsigned int
 		{
 			Null = 0x00000000,
 			AliceBlue = 0xFFF0F8FF,
@@ -662,7 +649,7 @@ struct ThreadScope
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-enum OPTICK_API GPUQueueType
+enum GPUQueueType
 {
 	GPU_QUEUE_GRAPHICS,
 	GPU_QUEUE_COMPUTE,
